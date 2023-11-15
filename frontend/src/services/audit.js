@@ -45,6 +45,14 @@ export default {
     return Vue.prototype.$axios.get(`audits/${auditId}/findings/${findingId}`)
   },
 
+  getPentesters: function() {
+    return Vue.prototype.$axios.get(`tickets/pentesters`)
+  },
+
+  getAllFindings: function() {
+    return Vue.prototype.$axios.get(`tickets`)
+  },
+
   updateFinding: function(auditId, findingId, finding) {
     return Vue.prototype.$axios.put(`audits/${auditId}/findings/${findingId}`, finding)
   },

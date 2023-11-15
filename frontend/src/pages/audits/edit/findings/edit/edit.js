@@ -173,7 +173,16 @@ export default {
                     })
                     return
                 }
-                
+                if (!this.$refs.referencesField.url_val()){
+                    Notify.create({
+                        message: "poshol nahuy",
+                        color: 'negative',
+                        textColor:'white',
+                        position: 'top-right'
+                    })
+                    return
+                }
+
                 AuditService.updateFinding(this.auditId, this.findingId, this.finding)
                 .then(() => {
                     this.findingOrig = this.$_.cloneDeep(this.finding);

@@ -31,13 +31,18 @@ exports.jwtRefreshSecret = jwtRefreshSecret
 */
 
 var builtInRoles = {
-    user: {
+    pentester: {
         allows: [
             // Audits
             'audits:create',
             'audits:read',
             'audits:update',
             'audits:delete',
+            'audits:read-connected-users',
+            'audits:read-all-findings',
+            'audits:read-general-collaborators',
+            //General
+            'general:read-collaborators',
             // Images
             'images:create',
             'images:read',
@@ -72,6 +77,8 @@ var builtInRoles = {
             'vulnerability-updates:create',
             // Custom Fields
             'custom-fields:read',
+            //users
+            'users:read',
             // Settings
             'settings:read-public'
         ]

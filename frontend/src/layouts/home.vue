@@ -11,6 +11,13 @@
             <q-item-section>{{$t('nav.audits')}}</q-item-section>
             </q-item>
 
+            <q-item to='/tickets' active-class="text-green">
+            <q-item-section avatar style="min-width:0" class="q-pr-sm">
+                <q-icon name="fa fa-database" />
+            </q-item-section>
+            <q-item-section>{{$t('nav.tickets')}}</q-item-section>
+            </q-item>
+
             <q-item to='/vulnerabilities' active-class="text-green">
             <q-item-section avatar style="min-width:0" class="q-pr-sm">
                 <q-icon name="fa fa-shield-alt" />

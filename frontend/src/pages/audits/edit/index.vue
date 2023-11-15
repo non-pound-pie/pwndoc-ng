@@ -200,7 +200,7 @@
 					</q-list>
 				</q-list>
 			</template>
-			<template v-slot:after>
+			<template v-slot:after v-if="isAllowedConnectedUsers">
 				<q-list>
 					<q-separator />
 					<q-item class="q-py-lg">
@@ -281,30 +281,36 @@ export default {
 		watch: {
 			'audit.findings': {
 				handler(newVal, oldVal) {
-					var result = _.chain(this.audit.findings)
-					.groupBy("category")
-					.map((value, key) => {
-						if (key === 'undefined') key = 'No Category'
-						var sortOption = this.audit.sortFindings.find(option => option.category === key) // Get sort option saved in audit
-						
-						if (!sortOption) { // no option for category in audit
-							sortOption = this.vulnCategories.find(e => e.name === key) // Get sort option from default in vulnerability category
-							if (sortOption) // found sort option from vuln categories
-								sortOption.category = sortOption.name
-							else // no default option or category don't exist
-								sortOption = {category: key, sortValue: 'cvssScore', sortOrder: 'desc', sortAuto: true} // set a default sort option
-							
-							this.audit.sortFindings.push({
-								category: sortOption.category,
-								sortValue: sortOption.sortValue,
-								sortOrder: sortOption.sortOrder,
-								sortAuto: sortOption.sortAuto
-							})
-						}
-						
-						return {category: key, findings: value, sortOption: sortOption}
-					})
-					.value()
+					var findings = this.audit.findings;
+					// Если не имеет доступа к чтению всех тикетов в аудите, фильтруем findings
+					if (!UserService.isAllowed("audits:read-all-findings")) {
+						findings = Array.from(findings).filter(finding => finding.creator === UserService.user.id);
+					}
+
+					var result = _.chain(findings)
+						.groupBy("category")
+						.map((value, key) => {
+							if (key === 'undefined') key = 'No Category'
+							var sortOption = this.audit.sortFindings.find(option => option.category === key) // Get sort option saved in audit
+
+							if (!sortOption) { // no option for category in audit
+								sortOption = this.vulnCategories.find(e => e.name === key) // Get sort option from default in vulnerability category
+								if (sortOption) // found sort option from vuln categories
+									sortOption.category = sortOption.name
+								else // no default option or category don't exist
+									sortOption = {category: key, sortValue: 'cvssScore', sortOrder: 'desc', sortAuto: true} // set a default sort option
+
+								this.audit.sortFindings.push({
+									category: sortOption.category,
+									sortValue: sortOption.sortValue,
+									sortOrder: sortOption.sortOrder,
+									sortAuto: sortOption.sortAuto
+								})
+							}
+
+							return {category: key, findings: value, sortOption: sortOption}
+						})
+						.value()
 
 					this.findingList = result
 				},
@@ -314,7 +320,8 @@ export default {
 		},
 
 		computed: {
-			generalUsers: function() {return this.users.filter(user => user.menu === 'general')},
+			isAllowedConnectedUsers: function() {return UserService.isAllowed("audits:read-connected-users");},
+ 			generalUsers: function() {return this.users.filter(user => user.menu === 'general')},
 			networkUsers: function() {return this.users.filter(user => user.menu === 'network')},
 			findingUsers: function() {return this.users.filter(user => user.menu === 'editFinding')},
 			sectionUsers: function() {return this.users.filter(user => user.menu === 'editSection')},

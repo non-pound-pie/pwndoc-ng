@@ -1,13 +1,21 @@
 <template>
     <q-input
-    :label="label"
+    ref="textareaField"
+    label-slot
     stack-label
     v-model="dataString"
     type="textarea"
     @input="updateParent"
-    outlined 
+    outlined
+    :rules="rules"
+    lazy-rules="ondemand"
     :readonly="readonly"
-    />
+    :needs_url_validate="needs_url_validate"
+    >
+    <template v-slot:label>
+        {{label}} <span v-if="rules && rules[0] !== ''" class="text-red">*</span>
+    </template>
+    </q-input>
 </template>
 
 <script>
@@ -25,11 +33,17 @@ export default {
             type: Boolean,
             default: false
         },
+        rules: Array,
+        needs_url_validate: {
+            type: Boolean,
+            default: false
+        }
     },
 
     data: function() {
         return {
-            dataString: ""
+            dataString: "",
+            hasError: false
         }
     },
 
@@ -53,8 +67,25 @@ export default {
                 this.$emit('input', this.dataString.split('\n').filter(e => e !== ''))
             else
                 this.$emit('input', this.dataString.split('\n'))
+        },
+
+        validate: function() {
+            this.$refs.textareaField.validate()
+            this.hasError = this.$refs.textareaField.hasError
+        },
+
+        url_val: function(){
+            if (!this.needs_url_validate)
+                return true
+            let huy = this.dataString.split('\n')
+            for (let i in huy){
+                if (huy[i] !== '' && !huy[i].match(/^((https?|ftps?):\/\/)?([\wА-я-]+\.)*[\wА-я-]+\/?$/)){
+                    return false
+                    }
+            }
+            return true
         }
-    }
+    },
 }
 
 </script>

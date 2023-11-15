@@ -27,15 +27,13 @@ export default {
             // Datatable headers
             dtHeaders: [
                 {name: 'name', label: $t('name'), field: 'name', align: 'left', sortable: true},
-                {name: 'language', label: $t('language'), field: 'language', align: 'left', sortable: true},
                 {name: 'company', label: $t('company'), field: row => (row.company)?row.company.name:'', align: 'left', sortable: true},
-                {name: 'users', label: $t('participants'), align: 'left', sortable: true},
                 {name: 'date', label: $t('date'), field: row => row.createdAt.split('T')[0], align: 'left', sortable: true},
                 {name: 'connected', label: '', align: 'left', sortable: false},
                 {name: 'reviews', label: '', align: 'left', sortable: false},
                 {name: 'action', label: '', field: 'action', align: 'left', sortable: false},
             ],
-            visibleColumns: ['name', 'language', 'company', 'users', 'date', 'action'],
+            visibleColumns: ['name', 'company', 'date', 'action'],
             // Datatable pagination
             pagination: {
                 page: 1,
@@ -50,7 +48,7 @@ export default {
                 {label:'All', value:0}
             ],
             // Search filter
-            search: {finding: '', name: '', language: '', company: '', users: '', date: ''},
+            search: {finding: '', name: '', company: '', date: ''},
             myAudits: false,
             displayConnected: false,
             displayReadyForReview: false,

@@ -106,17 +106,13 @@ module.exports = function(app, io) {
 
     // Get audit general information
     app.get("/api/audits/:auditId/general", acl.hasPermission('audits:read'), function(req, res) {
-        // #swagger.tags = ['Audit']
-
-        Audit.getGeneral(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.params.auditId, req.decodedToken.id)
+        Audit.getGeneral(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.params.auditId, req.decodedToken.id, acl.isAllowed(req.decodedToken.role, 'audits:read-general-collaborators'),)
         .then(msg => Response.Ok(res, msg))
         .catch(err => Response.Internal(res, err))
     });
 
     // Update audit general information
-    app.put("/api/audits/:auditId/general", acl.hasPermission('audits:update'), async function(req, res) {
-        // #swagger.tags = ['Audit']
-
+    app.put("/api/audits/:auditId/general", acl.hasPermission('audits:update-general'), async function(req, res) {
         var update = {};
         
         var settings = await Settings.getAll();
@@ -262,6 +258,7 @@ module.exports = function(app, io) {
         var finding = {};
         // Required parameters
         finding.title = req.body.title;
+        finding.pentester = req.body.pentester;
         
         // Optional parameters
         if (req.body.vulnType) finding.vulnType = req.body.vulnType;
@@ -275,8 +272,9 @@ module.exports = function(app, io) {
         if (req.body.poc) finding.poc = req.body.poc;
         if (req.body.scope) finding.scope = req.body.scope;
         if (req.body.status !== undefined) finding.status = req.body.status;
-        if (req.body.category) finding.category = req.body.category
-        if (req.body.customFields) finding.customFields = req.body.customFields
+        if (req.body.category) finding.category = req.body.category;
+        if (req.body.customFields) finding.customFields = req.body.customFields;
+        if (req.decodedToken.id) finding.creator = req.decodedToken.id;
 
         if (settings.reviews.enabled && settings.reviews.private.removeApprovalsUponUpdate) {
             Audit.updateGeneral(acl.isAllowed(req.decodedToken.role, 'audits:update-all'), req.params.auditId, req.decodedToken.id, { approvals: [] });
@@ -299,6 +297,14 @@ module.exports = function(app, io) {
         .catch(err => Response.Internal(res, err))
     });
 
+    app.get("/api/tickets", acl.hasPermission('audits:read'), function(req, res) {
+        Audit.getAllFindings(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.decodedToken.id, acl.isAllowed(req.decodedToken.role, 'audits:read-all-findings'))
+        .then(msg => {
+            Response.Ok(res, msg)
+        })
+        .catch(err => Response.Internal(res, err))
+    });
+
     // Update finding of audit
     app.put("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update'), async function(req, res) {
         // #swagger.tags = ['Audit']
@@ -313,6 +319,7 @@ module.exports = function(app, io) {
         var finding = {};
         // Optional parameters
         if (req.body.title) finding.title = req.body.title;
+        if (req.body.pentester) finding.pentester = req.body.pentester;
         if (req.body.vulnType) finding.vulnType = req.body.vulnType;
         if (!_.isNil(req.body.description)) finding.description = req.body.description;
         if (!_.isNil(req.body.observation)) finding.observation = req.body.observation;
@@ -533,6 +540,14 @@ module.exports = function(app, io) {
         .catch((err) => {
             Response.Internal(res, err);
         })
+    });
+
+    app.get("/api/tickets", acl.hasPermission('audits:read'), function(req, res) {
+        Audit.getAllFindings(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.decodedToken.id, acl.isAllowed(req.decodedToken.role, 'audits:read-all-findings'))
+        .then(msg => {
+            Response.Ok(res, msg)
+        })
+        .catch(err => Response.Internal(res, err))
     });
 
     // Sets the audit state to EDIT or REVIEW
