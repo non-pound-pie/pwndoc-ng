@@ -1,21 +1,14 @@
 <template>
     <q-input
-    ref="textareaField"
-    label-slot
+    :label="label"
     stack-label
     v-model="dataString"
     type="textarea"
     @input="updateParent"
-    outlined
-    :rules="rules"
-    lazy-rules="ondemand"
+    outlined 
     :readonly="readonly"
     :needs_url_validate="needs_url_validate"
-    >
-    <template v-slot:label>
-        {{label}} <span v-if="rules && rules[0] !== ''" class="text-red">*</span>
-    </template>
-    </q-input>
+    />
 </template>
 
 <script>
@@ -33,7 +26,6 @@ export default {
             type: Boolean,
             default: false
         },
-        rules: Array,
         needs_url_validate: {
             type: Boolean,
             default: false
@@ -42,8 +34,7 @@ export default {
 
     data: function() {
         return {
-            dataString: "",
-            hasError: false
+            dataString: ""
         }
     },
 
@@ -69,12 +60,7 @@ export default {
                 this.$emit('input', this.dataString.split('\n'))
         },
 
-        validate: function() {
-            this.$refs.textareaField.validate()
-            this.hasError = this.$refs.textareaField.hasError
-        },
-
-        url_val: function(){
+        url_val: function() {
             if (!this.needs_url_validate)
                 return true
             let huy = this.dataString.split('\n')

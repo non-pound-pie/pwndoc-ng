@@ -34,28 +34,26 @@ var builtInRoles = {
     pentester: {
         allows: [
             // Audits
-            'audits:create',
             'audits:read',
+            'audits:read-all',
             'audits:update',
-            'audits:delete',
-            'audits:read-connected-users',
+            'audits:users-connected',
             'audits:read-all-findings',
             'audits:read-general-collaborators',
-            //General
-            'general:read-collaborators',
             // Images
             'images:create',
             'images:read',
+            'images:delete',
             // Clients
-            'clients:create',
+            // 'clients:create',
             'clients:read',
-            'clients:update',
-            'clients:delete',
+            // 'clients:update',
+            // 'clients:delete',
             // Companies
-            'companies:create',
+            // 'companies:create',
             'companies:read',
-            'companies:update',
-            'companies:delete',
+            // 'companies:update',
+            // 'companies:delete',
             // Languages
             'languages:read',
             // Audit Types
@@ -69,16 +67,13 @@ var builtInRoles = {
             // Templates
             'templates:read',
             // Users
-            'users:read',
+            // 'users:read',
             // Roles
-            'roles:read',
+            // 'roles:read',
             // Vulnerabilities
             'vulnerabilities:read',
-            'vulnerability-updates:create',
             // Custom Fields
             'custom-fields:read',
-            //users
-            'users:read',
             // Settings
             'settings:read-public'
         ]

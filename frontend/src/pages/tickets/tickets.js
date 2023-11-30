@@ -15,7 +15,6 @@ export default {
             UserService: UserService,
             // Audits, pentesters, findings lists
             audits: [],
-            pentesters: [],
             findings: [],
             // Loading state
             loading: true,
@@ -60,8 +59,8 @@ export default {
     },
 
     mounted: function() {
-        this.search.Pentester = this.$route.params.Pentester;
-
+        // this.search.Pentester = this.$route.params.Pentester;
+        
         this.getLanguages();
         this.getAuditTypes();
         this.getFindings();

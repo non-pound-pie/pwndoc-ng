@@ -320,7 +320,7 @@ export default {
 		},
 
 		computed: {
-			isAllowedConnectedUsers: function() {return UserService.isAllowed("audits:read-connected-users");},
+			isAllowedConnectedUsers: function() {return UserService.isAllowed("audits:users-connected");},
  			generalUsers: function() {return this.users.filter(user => user.menu === 'general')},
 			networkUsers: function() {return this.users.filter(user => user.menu === 'network')},
 			findingUsers: function() {return this.users.filter(user => user.menu === 'editFinding')},

@@ -174,7 +174,7 @@ export default {
             this.currentCollab.lastname = '';
             this.currentCollab.firstname = '';
             this.currentCollab.username = '';
-            this.currentCollab.role = 'user';
+            this.currentCollab.role = '';
             this.currentCollab.password = '';
             this.currentCollab.email = '';
             this.currentCollab.phone = '';

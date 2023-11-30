@@ -175,14 +175,14 @@ export default {
                 }
                 if (!this.$refs.referencesField.url_val()){
                     Notify.create({
-                        message: "poshol nahuy",
+                        message: "poshol nahuy. Нужен только домен",
                         color: 'negative',
                         textColor:'white',
                         position: 'top-right'
                     })
                     return
                 }
-
+                
                 AuditService.updateFinding(this.auditId, this.findingId, this.finding)
                 .then(() => {
                     this.findingOrig = this.$_.cloneDeep(this.finding);

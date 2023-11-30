@@ -100,3 +100,99 @@ A reviewer with the `audits:review-all` permission should also have the `audits:
 ```
 
 Keep in mind that these two roles inherit their permissions from the `user` role, which means that they can also create their own audits. A reviewer cannot review an audit for which he is the creator or a collaborator. 
+
+
+Список пермишенов:
+
+1. Аудит
+
+audits:read - доступ к странице /audits
+audits:read-all - чтение всех существующих аудитов
+audits:users-connected - отображение пользователей, читающих аудит (на странице /audits)
+audits:create - создание аудита
+audits:delete - удаление своего аудита
+audits:delete-all - удаление всех аудитов
+audits:update - обновление аудита, к которому есть доступ (создатель или участник)
+audits:update-all - обновление всех аудитов 
+audits:read-general-collaborators - отображение списка пользователей, у которых есть доступ к аудиту (на странице /audits/{ID}/general)
+audits:update-general - обновление информации на странице /audits/{ID}/general
+
+audits:read-all-findings - чтение всех тикетов (на странице /tickets)
+
+audits:review - ?
+audits:review-all - ?
+
+2. Клиенты
+
+clients:read - чтение списка существующих клиентов
+clients:create - создание клиента
+clients:update - обновление информации о клиенте
+clients:delete - удаление клитента
+
+3. Компании
+
+companies:read - чтение списка компаний
+companies:create - добавление компании в список
+companies:update - обновление информации о существующей компании
+companies:delete - удаление компании
+
+4. Данные
+
+roles:read - чтение списка существующих ролей
+languages:read - чтение списка языков
+languages:create - добавление языка в список
+languages:delete
+languages:update
+
+audit-types:read - чтение списка типов аудитов
+audit-types:create - создание нового типа аудита
+audit-types:delete
+audit-types:update
+vulnerability-types:read
+vulnerability-types:create
+vulnerability-types:delete
+vulnerability-types:update
+
+vulnerability-categories:read
+vulnerability-categories:create
+vulnerability-categories:delete
+
+sections:read
+sections:create
+sections:delete
+sections:update
+
+custom-fields:read
+custom-fields:create
+custom-fields:update
+custom-fields:delete
+
+5. Изображения
+
+images: read, create, delete
+
+6. Настройки
+
+settings
+
+7. Шаблоны отчетов
+
+templates:read
+templates:create
+templates:update
+templates:delete
+
+8. Список пользователей
+
+users:read
+users:read-all
+users:create
+users:update
+
+9. База данных
+
+vulnerabilities:read
+vulnerabilities:create
+vulnerabilities:update
+vulnerabilities:delete
+vulnerabilities:delete-all
